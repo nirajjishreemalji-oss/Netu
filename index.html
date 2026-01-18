@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netu App - Final</title>
+    <style>
+        body { margin: 0; background-color: #000; color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; }
+        header { padding: 10px; text-align: center; background: #111; position: sticky; top: 0; z-index: 100; }
+        header h1 { color: #ff0000; margin: 0; letter-spacing: 5px; }
+        .search-container { padding: 10px; text-align: center; }
+        #searchInput { width: 90%; padding: 10px; border-radius: 20px; border: none; background: #222; color: white; }
+        .feed { flex: 1; overflow-y: scroll; padding-bottom: 80px; }
+        .video-container { width: 100%; border-bottom: 1px solid #222; margin-bottom: 20px; }
+        video { width: 100%; max-height: 400px; }
+        .video-details { padding: 10px; }
+        .video-title { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .actions { display: flex; gap: 20px; }
+        .action-btn { background: none; border: none; color: white; cursor: pointer; font-size: 14px; }
+        .liked { color: #ff0000; }
+        #profile-page { display: none; text-align: center; padding: 20px; }
+        .profile-pic { width: 80px; height: 80px; border-radius: 50%; background: #ff0000; margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+        nav { display: flex; justify-content: space-around; padding: 15px; background: #111; position: fixed; bottom: 0; width: 100%; border-top: 1px solid #333; }
+        .upload-btn { background: #ff0000; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-top: -10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<header><h1>NETU</h1></header>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="वीडियो खोजें..." onkeyup="searchVideo()">
+</div>
+
+<div class="feed" id="videoFeed">
+    <div class="video-container">
+        <video controls><source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4"></video>
+        <div class="video-details">
+            <div class="video-title">Netu App में आपका स्वागत है!</div>
+            <div class="actions">
+                <button class="action-btn" onclick="this.classList.toggle('liked')">❤️ लाइक</button>
+                <button class="action-btn">💬 कमेंट</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="profile-page">
+    <div class="profile-pic">👤</div>
+    <h2>आपका नाम (Netu User)</h2>
+    <p>@netu_creator</p>
+    <button onclick="showHome()" style="background:#444; color:white; border:none; padding:10px;">वापस होम पर जाएं</button>
+</div>
+
+<nav>
+    <div onclick="showHome()">🏠<br>Home</div>
+    <div onclick="alert('खोज फीचर चालू है!')">🔍<br>Explore</div>
+    <label for="video-input" class="upload-btn">+</label>
+    <input type="file" id="video-input" style="display:none" accept="video/*" onchange="uploadVideo(event)">
+    <div onclick="alert('कोई नया नोटिफिकेशन नहीं है')">🔔<br>Alerts</div>
+    <div onclick="showProfile()">👤<br>Profile</div>
+</nav>
+
+<script>
+    function showProfile() {
+        document.getElementById('videoFeed').style.display = 'none';
+        document.getElementById('profile-page').style.display = 'block';
+    }
+    function showHome() {
+        document.getElementById('videoFeed').style.display = 'block';
+        document.getElementById('profile-page').style.display = 'none';
+    }
+    function uploadVideo(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            const feed = document.getElementById('videoFeed');
+            const card = document.createElement('div');
+            card.className = 'video-container';
+            card.innerHTML = `<video controls src="${url}"></video><div class="video-details"><div class="video-title">नया अपलोड</div></div>`;
+            feed.prepend(card);
+            alert("वीडियो लोड हो गया!");
+        }
+    }
+    function searchVideo() {
+        let input = document.getElementById('searchInput').value.toUpperCase();
+        let cards = document.getElementsByClassName('video-container');
+        for (let i = 0; i < cards.length; i++) {
+            let title = cards[i].innerText;
+            cards[i].style.display = title.toUpperCase().indexOf(input) > -1 ? "" : "none";
+        }
+    }
+</script>
+
+</body>
+</html>
